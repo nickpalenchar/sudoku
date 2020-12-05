@@ -65,6 +65,27 @@ class Board {
     }
 
     populate() {
+        for (let y = 0; y < this.data.length; y++) {
+            for (let x = 0; x < this.data[y].length; x++) {
+                let count = 0;
+                while (true) {
+                    let candidate = (Math.round(Math.random() * 8) + 1).toString();
+                    if (!this.isInColumn(candidate, x) &&
+                        !this.isInRow(candidate, y) &&
+                        !this.isInQuadrant(candidate, Math.floor(y / 3), Math.floor(x / 3))
+                    ) {
+                        this.add(y, x, candidate)
+                        break;
+                    }
+                    if (count++ > 100) {
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    populateOld() {
         for (let i = 0; i < 81; i++) {
             const num = ((i % 8) + 1).toString();
 
@@ -83,7 +104,6 @@ class Board {
                 }
 
                 if (tries++ > 1000) {
-                    console.log('could not create a board');
                     this.isImpossible = true;
                     return;
                 }
