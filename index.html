@@ -1,0 +1,41 @@
+<html lang="en">
+
+<body>
+<div id="board"></div>
+</body>
+<style>
+    .cell {
+        width: 64px;
+        height: 64px;
+        display: inline-block;
+        border: 1px solid black;
+        box-sizing: border-box;
+        padding: 20px;
+    }
+    div {
+        font-size: 24px;
+    }
+</style>
+
+<script src="game.js"></script>
+<script>
+    const board = document.getElementById('board')
+    for (let y = 0; y < 9; y++) {
+        const row = document.createElement('div');
+        row.classList.add('row');
+
+        for (let x = 0; x < 9; x++) {
+            const el = document.createElement('div');
+            el.id = `${y}-${x}`;
+            el.classList.add('cell');
+            el.innerHTML = `<div>${BOARD[y][x]}</div>`;
+            row.appendChild(el);
+        }
+        board.appendChild(row);
+    }
+</script>
+<script>
+    console.log(BOARD)
+</script>
+
+</html>
