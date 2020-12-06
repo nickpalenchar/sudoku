@@ -1,15 +1,3 @@
-// function createBoard() {
-//     let result = [];
-//     for (let y = 0; y < 9; y++) {
-//         let row = [];
-//         for (let x = 0; x < 9; x++) {
-//             row.push('_');
-//         }
-//         result.push(row);
-//     }
-//     return result;
-// }
-
 function createBoard(y=0, x=0, choice=null, board=null) {
 
     board = board || new Board();
@@ -76,7 +64,6 @@ class Board {
             result.push(row);
         }
         this.data = result;
-        this.isImpossible = null;
     }
 
     add(y, x, val) {
@@ -119,10 +106,6 @@ class Board {
         return this.data[y][x] === '_';
     }
 
-    randomNumber() {
-        return randomNumber();
-    }
-
     copy() {
         let boardCopy = new Board();
         for (let y = 0; y < this.data.length; y++) {
@@ -132,46 +115,9 @@ class Board {
         }
         return boardCopy;
     }
-    populate(y = 0, x = 0, choice = this.randomNumber()) {
-
-        if (this.isInColumn(candidate, x) ||
-            this.isInRow(candidate, y) ||
-            this.isInQuadrant(candidate, Math.floor(y / 3), Math.floor(x / 3))
-        ) {
-            return null;
-        }
-
-
-        while (tried.includes(choice)) {
-            choice = this.randomNumber();
-        }
-
-    }
-
-    populateOld() {
-        for (let y = 0; y < this.data.length; y++) {
-            for (let x = 0; x < this.data[y].length; x++) {
-                let count = 0;
-                while (true) {
-                    let candidate = (Math.round(Math.random() * 8) + 1).toString();
-                    if (!this.isInColumn(candidate, x) &&
-                        !this.isInRow(candidate, y) &&
-                        !this.isInQuadrant(candidate, Math.floor(y / 3), Math.floor(x / 3))
-                    ) {
-                        this.add(y, x, candidate)
-                        break;
-                    }
-                    if (count++ > 100) {
-                        return;
-                    }
-                }
-            }
-        }
-    }
 }
 
-// const b = new Board();
-// b.populate();
+
 const b = createBoard();
 console.log(b.data);
 try {
@@ -180,53 +126,3 @@ try {
 
 }
 
-const testData = [
-    [
-        '_', '_', '6',
-        '_', '8', '8',
-        '3', '6', '1'
-    ],
-    [
-        '4', '_', '6',
-        '2', '7', '5',
-        '5', '7', '4'
-    ],
-    [
-        '5', '8', '3',
-        '8', '7', '8',
-        '8', '7', '5'
-    ],
-    [
-        '5', '3', '_',
-        '7', '5', '_',
-        '5', '5', '3'
-    ],
-    [
-        '_', '3', '6',
-        '4', '_', '_',
-        '3', '6', '4'
-    ],
-    [
-        '4', '1', '1',
-        '2', '2', '_',
-        '6', '7', '3'
-    ],
-    [
-        '4', '_', '1',
-        '4', '1', '_',
-        '7', '4', '1'
-    ],
-    [
-        '2', '3', '2',
-        '1', '1', '_',
-        '2', '8', '1'
-    ],
-    [
-        '2', '_', '2',
-        '6', '7', '_',
-        '8', '6', '_'
-    ]
-]
-//
-// const testBoard = new Board();
-// testBoard.data = testData;
