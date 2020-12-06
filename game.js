@@ -1,13 +1,68 @@
-function createBoard() {
-    let result = [];
-    for (let y = 0; y < 9; y++) {
-        let row = [];
-        for (let x = 0; x < 9; x++) {
-            row.push('_');
-        }
-        result.push(row);
+// function createBoard() {
+//     let result = [];
+//     for (let y = 0; y < 9; y++) {
+//         let row = [];
+//         for (let x = 0; x < 9; x++) {
+//             row.push('_');
+//         }
+//         result.push(row);
+//     }
+//     return result;
+// }
+
+function createBoard(y=0, x=0, choice=null, board=null) {
+
+    board = board || new Board();
+    choice = choice || randomNumber();
+
+    if (board.isInColumn(choice, x) ||
+        board.isInRow(choice, y) ||
+        board.isInQuadrant(choice, Math.floor(y / 3), Math.floor(x / 3))
+    ) {
+        // choice was illegal
+        return null;
     }
-    return result;
+    board.add(y, x, choice);
+
+    if (x === 8 && y === 8) {
+        return board;
+    }
+
+    // increment to next step
+    let nextX = x;
+    let nextY = y;
+    if (x === 8) {
+        nextX = 0;
+        nextY++;
+    }
+    else {
+        nextX++;
+    }
+    // recursive call
+    let tries = randomRow();
+    for (let i = 0; i < tries.length; i++) {
+        let result = createBoard(nextY, nextX, tries[i], board.copy());
+        if (result) {
+            return result;
+        }
+    }
+}
+
+function randomRow() {
+    let row = [];
+    for (let i = 1; i <= 9; i++) {
+        let val = i.toString();
+        let index = Math.round(Math.random() * 8);
+        while (row[index]) {
+            index = Math.round(Math.random() * 8);
+        }
+        row[index] = val;
+    }
+    return row;
+}
+
+function randomNumber() {
+    return (Math.round(Math.random() * 8) + 1).toString();
 }
 
 class Board {
@@ -64,7 +119,36 @@ class Board {
         return this.data[y][x] === '_';
     }
 
-    populate() {
+    randomNumber() {
+        return randomNumber();
+    }
+
+    copy() {
+        let boardCopy = new Board();
+        for (let y = 0; y < this.data.length; y++) {
+            for (let x = 0; x < this.data[0].length; x++) {
+                boardCopy.data[y][x] = this.data[y][x]
+            }
+        }
+        return boardCopy;
+    }
+    populate(y = 0, x = 0, choice = this.randomNumber()) {
+
+        if (this.isInColumn(candidate, x) ||
+            this.isInRow(candidate, y) ||
+            this.isInQuadrant(candidate, Math.floor(y / 3), Math.floor(x / 3))
+        ) {
+            return null;
+        }
+
+
+        while (tried.includes(choice)) {
+            choice = this.randomNumber();
+        }
+
+    }
+
+    populateOld() {
         for (let y = 0; y < this.data.length; y++) {
             for (let x = 0; x < this.data[y].length; x++) {
                 let count = 0;
@@ -84,41 +168,15 @@ class Board {
             }
         }
     }
-
-    populateOld() {
-        for (let i = 0; i < 81; i++) {
-            const num = ((i % 8) + 1).toString();
-
-            let tries = 0;
-            while (true) {
-                let area = [Math.round(Math.random() * 8), Math.round(Math.random() * 8)];
-                // area[y][x]
-
-                if (this.isEmpty(...area) &&
-                    !this.isInColumn(num, area[1]) &&
-                    !this.isInRow(num, area[0]) &&
-                    !this.isInQuadrant(num, Math.floor(area[0] / 3), Math.floor(area[1] / 3))
-                ) {
-                    this.add(...area, num);
-                    break;
-                }
-
-                if (tries++ > 1000) {
-                    this.isImpossible = true;
-                    return;
-                }
-            }
-        }
-    }
 }
 
-const b = new Board();
-b.populate();
+// const b = new Board();
+// b.populate();
+const b = createBoard();
 console.log(b.data);
 try {
     window.BOARD = b.data;
-}
-catch (e) {
+} catch (e) {
 
 }
 
@@ -169,8 +227,6 @@ const testData = [
         '8', '6', '_'
     ]
 ]
-
-const testBoard = new Board();
-testBoard.data = testData;
-
-console.log(testBoard.isInRow('8', 0))
+//
+// const testBoard = new Board();
+// testBoard.data = testData;
