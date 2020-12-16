@@ -1,4 +1,4 @@
-const EMPTY = '_';
+const EMPTY = '&nbsp;';
 
 function createBoard(y=0, x=0, _choice=null, _board=null) {
 
@@ -74,26 +74,38 @@ class Board {
     }
 
     isInRow(val, rowNum) {
-        return Board._getRow(this.answer, rowNum).includes(val)
+        return Board.getRow(this.answer, rowNum).includes(val)
     }
-
     isInColumn(val, colNum) {
-        return Board._getCol(this.answer, colNum).includes(val);
+        return Board.getCol(this.answer, colNum).includes(val);
     }
-
     isInQuadrant(val, yq, xq) {
         /* Quadrant is in a 3x3 grid (but zero index)
         */
-        return Board._getQuadrant(this.answer, yq, xq).includes(val);
+        return Board.getQuad(this.answer, yq, xq).includes(val);
     }
 
-    static _getRow(board, rowNum) {
+    static numInRow(board, row) {
+        const theRow = Board.getRow(board, row);
+        return theRow.reduce((acc, i) => acc + (i === EMPTY ? 0 : 1), 0);
+    }
+    static numInCol(board, col) {
+        const theCol = Board.getCol(board, col);
+        return theCol.reduce((acc, i) => acc + (i === EMPTY ? 0 : 1), 0);
+    }
+    static numInQuad(board, y, x) {
+        const theQuad = Board.getQuad(board, y, x);
+        return theQuad.reduce((acc, i) => acc + (i === EMPTY ? 0 : 1), 0);
+    }
+
+
+    static getRow(board, rowNum) {
         return board[rowNum];
     }
-    static _getCol(board, colNum) {
+    static getCol(board, colNum) {
         return board.map(row => row[colNum]);
     }
-    static _getQuadrant(board, y, x) {
+    static getQuad(board, y, x) {
         const ystart = y * 3;
         const yend = ystart + 3;
         const xstart = x * 3;
@@ -107,8 +119,21 @@ class Board {
         return result;
     }
 
-    isEmpty(y, x) {
-        return this.answer[y][x] === '_';
+    static isEmpty(board, y, x) {
+        debugger;
+        return board[y][x] === EMPTY;
+    }
+
+    static getEmptyCoords(board) {
+        let result = [];
+        for (let y = 0; y < board.length; y++) {
+            for (let x = 0; x < board[y].length; x++) {
+                if (board[y][x] === EMPTY) {
+                    result.push([y, x])
+                }
+            }
+        }
+        return result;
     }
 
     copy() {
@@ -121,16 +146,32 @@ class Board {
         return boardCopy;
     }
 
-    newFromAnswer() {
-
+    newFromAnswer(missing=35) {
+        let toGo = missing;
+        let board = this.copy().answer;
+        while (toGo) {
+            let choice = [Math.floor(Math.random() * 9), Math.floor(Math.random() * 9)]
+            if (Board.isEmpty(board, choice[0], choice[1])) {
+                continue;
+            }
+            if (Board.numInQuad(board, Math.floor(choice[0] / 3), Math.floor(choice[1] / 3)) < 2) {
+                continue;
+            }
+            board[choice[0]][choice[1]] = EMPTY;
+            toGo--;
+        }
+        this.board = board;
     }
 }
 
 
 const b = createBoard();
+b.newFromAnswer();
 console.log(b.answer);
+console.log(b.board);
 try {
-    window.BOARD = b.answer;
+    window.BOARD = b.board;
+    console.log(Board.numInCol(b, 4))
 } catch (e) {
 
 }

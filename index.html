@@ -37,5 +37,10 @@
         }
         board.appendChild(row);
     }
+
+    function fillCell(y, x, val) {
+        const el = document.getElementById(`${y}-${x}`);
+        el.innerHTML = `<div>${val}</div>`
+    }
 </script>
 </html>
