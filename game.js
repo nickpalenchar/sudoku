@@ -1,19 +1,19 @@
-function createBoard(y=0, x=0, choice=null, board=null) {
+function createBoard(y=0, x=0, _choice=null, _board=null) {
 
-    board = board || new Board();
-    choice = choice || randomNumber();
+    _board = _board || new Board();
+    _choice = _choice || randomNumber();
 
-    if (board.isInColumn(choice, x) ||
-        board.isInRow(choice, y) ||
-        board.isInQuadrant(choice, Math.floor(y / 3), Math.floor(x / 3))
+    if (_board.isInColumn(_choice, x) ||
+        _board.isInRow(_choice, y) ||
+        _board.isInQuadrant(_choice, Math.floor(y / 3), Math.floor(x / 3))
     ) {
         // choice was illegal
         return null;
     }
-    board.add(y, x, choice);
+    _board.add(y, x, _choice);
 
     if (x === 8 && y === 8) {
-        return board;
+        return _board;
     }
 
     // increment to next step
@@ -29,7 +29,7 @@ function createBoard(y=0, x=0, choice=null, board=null) {
     // recursive call
     let tries = randomRow();
     for (let i = 0; i < tries.length; i++) {
-        let result = createBoard(nextY, nextX, tries[i], board.copy());
+        let result = createBoard(nextY, nextX, tries[i], _board.copy());
         if (result) {
             return result;
         }
@@ -63,22 +63,21 @@ class Board {
             }
             result.push(row);
         }
-        this.data = result;
+        this.answer = result;
     }
 
     add(y, x, val) {
-        this.data[y][x] = val;
+        this.answer[y][x] = val;
     }
 
     isInRow(val, rowNum) {
-        const theRow = this.data[rowNum];
-        console.log('checking orow ', theRow);
+        const theRow = this.answer[rowNum];
         return theRow.includes(val);
     }
 
     isInColumn(val, colNum) {
         for (let i = 0; i < 9; i++) {
-            if (this.data[i][colNum] === val) {
+            if (this.answer[i][colNum] === val) {
                 return true;
             }
         }
@@ -94,7 +93,7 @@ class Board {
         const xend = xstart + 3;
         for (let y = ystart; y < yend; y++) {
             for (let x = xstart; x < xend; x++) {
-                if (this.data[y][x] === val) {
+                if (this.answer[y][x] === val) {
                     return true;
                 }
             }
@@ -103,14 +102,14 @@ class Board {
     }
 
     isEmpty(y, x) {
-        return this.data[y][x] === '_';
+        return this.answer[y][x] === '_';
     }
 
     copy() {
         let boardCopy = new Board();
-        for (let y = 0; y < this.data.length; y++) {
-            for (let x = 0; x < this.data[0].length; x++) {
-                boardCopy.data[y][x] = this.data[y][x]
+        for (let y = 0; y < this.answer.length; y++) {
+            for (let x = 0; x < this.answer[0].length; x++) {
+                boardCopy.answer[y][x] = this.answer[y][x]
             }
         }
         return boardCopy;
@@ -119,9 +118,9 @@ class Board {
 
 
 const b = createBoard();
-console.log(b.data);
+console.log(b.answer);
 try {
-    window.BOARD = b.data;
+    window.BOARD = b.answer;
 } catch (e) {
 
 }
