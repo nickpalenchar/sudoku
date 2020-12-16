@@ -74,17 +74,11 @@ class Board {
     }
 
     isInRow(val, rowNum) {
-        const theRow = this.answer[rowNum];
-        return theRow.includes(val);
+        return Board._getRow(this.answer, rowNum).includes(val)
     }
 
     isInColumn(val, colNum) {
-        for (let i = 0; i < 9; i++) {
-            if (this.answer[i][colNum] === val) {
-                return true;
-            }
-        }
-        return false;
+        return Board._getCol(this.answer, colNum).includes(val);
     }
 
     isInQuadrant(val, yq, xq) {
