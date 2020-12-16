@@ -1,3 +1,5 @@
+const EMPTY = '_';
+
 function createBoard(y=0, x=0, _choice=null, _board=null) {
 
     _board = _board || new Board();
@@ -64,6 +66,7 @@ class Board {
             result.push(row);
         }
         this.answer = result;
+
     }
 
     add(y, x, val) {
@@ -87,18 +90,27 @@ class Board {
     isInQuadrant(val, yq, xq) {
         /* Quadrant is in a 3x3 grid (but zero index)
         */
-        const ystart = yq * 3;
+        return Board._getQuadrant(this.answer, yq, xq).includes(val);
+    }
+
+    static _getRow(board, rowNum) {
+        return board[rowNum];
+    }
+    static _getCol(board, colNum) {
+        return board.map(row => row[colNum]);
+    }
+    static _getQuadrant(board, y, x) {
+        const ystart = y * 3;
         const yend = ystart + 3;
-        const xstart = xq * 3;
+        const xstart = x * 3;
         const xend = xstart + 3;
+        let result = [];
         for (let y = ystart; y < yend; y++) {
             for (let x = xstart; x < xend; x++) {
-                if (this.answer[y][x] === val) {
-                    return true;
-                }
+                result.push(board[y][x])
             }
         }
-        return false;
+        return result;
     }
 
     isEmpty(y, x) {
@@ -113,6 +125,10 @@ class Board {
             }
         }
         return boardCopy;
+    }
+
+    newFromAnswer() {
+
     }
 }
 
