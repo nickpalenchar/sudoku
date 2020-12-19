@@ -1,0 +1,23 @@
+
+
+.cell {
+    transition: background-color 3000ms ease-out;
+    cursor: pointer;
+}
+
+.cell:hover {
+    background-color: yellow;
+}
+
+.cell.noedit {
+    cursor: default;
+}
+
+.hint {
+    color: #824cbc; /* darkmagenta */
+}
+
+.trans-hint {
+    transition: background-color 0ms ease-out;
+    background-color: #d380f1;
+}

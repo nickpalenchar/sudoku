@@ -4,7 +4,7 @@
 <div id="board"></div>
 <div id="control-panel">
     <button>Check</button>
-    <button>Hint</button>
+    <button onclick="hint(b)">Hint</button>
 </div>
 </body>
 <style>
@@ -22,6 +22,7 @@
 </style>
 
 <script src="game.js"></script>
+<script src="boardControl.js"></script>
 <script>
     const board = document.getElementById('board')
     for (let y = 0; y < 9; y++) {
@@ -31,11 +32,29 @@
         for (let x = 0; x < 9; x++) {
             const el = document.createElement('div');
             el.id = `${y}-${x}`;
+            el.attributes
+            el.addEventListener('keypress', handleInput)
             el.classList.add('cell');
-            el.innerHTML = `<div>${BOARD[y][x]}</div>`;
+            el.innerHTML = `<div class="cell-input">${BOARD[y][x]}</div>`;
+            // el.children[0].addEventListener('keypress', handleInput)
+            if (BOARD[y][x] !== EMPTY) {
+                el.classList.add('answer', 'noedit')
+            }
+            else {
+                el.setAttribute('contenteditable', true);
+            }
             row.appendChild(el);
         }
         board.appendChild(row);
     }
+
+    function fillCell(y, x, val) {
+        const el = document.getElementById(`${y}-${x}`);
+        el.classList.add('hint', 'trans-hint');
+        setTimeout(()=>el.classList.remove('trans-hint'), 10);
+        el.innerHTML = `<div>${val}</div>`
+        return el;
+    }
 </script>
+<link type="text/css" rel="stylesheet" href="colors.css"/>
 </html>
