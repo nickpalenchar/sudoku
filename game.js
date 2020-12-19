@@ -136,6 +136,13 @@ class Board {
         return result;
     }
 
+    giveHint() {
+        const emptyCoords = Board.getEmptyCoords(this.board);
+        const target = Math.floor(Math.random() * emptyCoords.length);
+        const [y, x] = emptyCoords[target];
+        return [y, x, this.answer[y][x]];
+    }
+
     copy() {
         let boardCopy = new Board();
         for (let y = 0; y < this.answer.length; y++) {
@@ -164,14 +171,12 @@ class Board {
     }
 }
 
-
 const b = createBoard();
 b.newFromAnswer();
 console.log(b.answer);
 console.log(b.board);
 try {
     window.BOARD = b.board;
-    console.log(Board.numInCol(b, 4))
 } catch (e) {
 
 }

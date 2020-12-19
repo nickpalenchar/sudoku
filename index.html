@@ -4,7 +4,7 @@
 <div id="board"></div>
 <div id="control-panel">
     <button>Check</button>
-    <button>Hint</button>
+    <button onclick="hint(b)">Hint</button>
 </div>
 </body>
 <style>
@@ -43,4 +43,5 @@
         el.innerHTML = `<div>${val}</div>`
     }
 </script>
+<script src="boardControl.js"></script>
 </html>
