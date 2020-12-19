@@ -120,7 +120,6 @@ class Board {
     }
 
     static isEmpty(board, y, x) {
-        debugger;
         return board[y][x] === EMPTY;
     }
 
@@ -168,6 +167,18 @@ class Board {
             toGo--;
         }
         this.board = board;
+    }
+
+    updateFromUI(id='board') {
+        debugger;
+        const rows = document.getElementById(id);
+        for (let y = 0; y < rows.children.length; y++) {
+            let row = rows.children[y];
+            for (let x = 0; x < row.children.length; x++) {
+                const val = row.children[x].innerHTML.replace(/<\/?div>/g, "");
+                this.board[y][x] = val;
+            }
+        }
     }
 }
 

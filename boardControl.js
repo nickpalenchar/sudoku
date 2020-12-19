@@ -3,4 +3,5 @@
 function hint(board) {
     [y, x, answer] = board.giveHint();
     fillCell(y, x, answer);
+    board.updateFromUI();
 }
