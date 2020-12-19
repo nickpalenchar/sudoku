@@ -40,8 +40,12 @@
 
     function fillCell(y, x, val) {
         const el = document.getElementById(`${y}-${x}`);
+        el.classList.add('hint', 'trans-hint');
+        // debugger;
+        setTimeout(()=>el.classList.remove('trans-hint'), 10);
         el.innerHTML = `<div>${val}</div>`
     }
 </script>
 <script src="boardControl.js"></script>
+<link type="text/css" rel="stylesheet" href="colors.css"/>
 </html>

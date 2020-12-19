@@ -1,0 +1,14 @@
+
+
+.cell {
+    transition: background-color 3000ms ease-out;
+}
+
+.hint {
+    color: #824cbc; /* darkmagenta */
+}
+
+.trans-hint {
+    transition: background-color 0ms ease-out;
+    background-color: #d380f1;
+}
