@@ -1,7 +1,7 @@
 
 
 .cell {
-    transition: background-color 3000ms ease-out;
+    /*transition: background-color 3000ms ease-out;*/
     cursor: pointer;
 }
 
@@ -20,4 +20,9 @@
 .trans-hint {
     transition: background-color 0ms ease-out;
     background-color: #d380f1;
+}
+
+.activeCell {
+    background-color: dodgerblue !important;
+    color: #f3f3f3 !important;
 }

@@ -2,7 +2,6 @@
 
 function handleInput(event) {
     event.preventDefault();
-    const val = event.key;
     if (!/[1-9\s]/.test(event.key)) {
         return
     }
