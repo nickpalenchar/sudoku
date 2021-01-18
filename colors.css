@@ -23,6 +23,10 @@
 }
 
 .activeCell {
-    background-color: dodgerblue !important;
+    background-color: #1e90ff !important;
     color: #f3f3f3 !important;
+}
+
+.activeCell.noedit {
+    background-color: #879191 !important;
 }
